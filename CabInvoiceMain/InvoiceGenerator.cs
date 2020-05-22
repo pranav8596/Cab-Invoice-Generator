@@ -6,8 +6,10 @@ namespace CabInvoiceMain
 {
     public class InvoiceGenerator
     {
+        //Constants
         public const int CostPerKilometer = 10;
         public const int CostPerMinute = 1;
+        public const int MinimumFare = 5;
 
         /// <summary>
         /// Calculate the total fare for the given distance and time
@@ -17,7 +19,15 @@ namespace CabInvoiceMain
         /// <returns></returns>
         public double CalculateFare(double distance, int time)
         {
-            return distance * CostPerKilometer + time * CostPerMinute;
+            double totalFare = distance * CostPerKilometer + time * CostPerMinute;
+            if(totalFare < MinimumFare)
+            {
+                return MinimumFare;
+            }
+            else
+            {
+                return totalFare;
+            }
         }
     }
 }

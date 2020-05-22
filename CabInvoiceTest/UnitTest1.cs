@@ -10,6 +10,9 @@ namespace CabInvoiceTest
         {
         }
 
+        /// <summary>
+        /// When given proper distance and Time, should return total fare
+        /// </summary>
         [Test]
         public void GivenDistanceAndTime_WhenProper_ShouldReturnTotalFare()
         {
@@ -18,6 +21,19 @@ namespace CabInvoiceTest
             int time = 5;
             double fare = invoiceGenerator.CalculateFare(distance, time);
             Assert.AreEqual(35, fare);
+        }
+
+        /// <summary>
+        ///  When given less distance and Time, should return minimum fare
+        /// </summary>
+        [Test]
+        public void GivenDistanceAndTime_WhenLess_ShouldReturnMinimumFare()
+        {
+            InvoiceGenerator invoiceGenerator = new InvoiceGenerator();
+            double distance = 0.1;
+            int time = 1;
+            double fare = invoiceGenerator.CalculateFare(distance, time);
+            Assert.AreEqual(5, fare);
         }
     }
 }
