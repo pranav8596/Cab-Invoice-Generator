@@ -26,7 +26,6 @@ namespace CabInvoiceTest
             Assert.AreEqual(35, fare);
         }
 
-
         /// <summary>
         ///  When given less distance and Time, should return minimum fare
         /// </summary>
@@ -38,7 +37,6 @@ namespace CabInvoiceTest
             double fare = invoiceGenerator.CalculateFare(distance, time);
             Assert.AreEqual(5, fare);
         }
-
 
         /// <summary>
         /// When given multiple rides, should return number of rides,total fare,average fare
@@ -53,7 +51,6 @@ namespace CabInvoiceTest
             InvoiceSummary summary = invoiceGenerator.CalculateFare(rides);
             InvoiceSummary expectedInvoiceSummary = new InvoiceSummary(3, 75.0);
             bool result = summary.Equals(expectedInvoiceSummary);
-            Console.WriteLine(result);
             Assert.AreEqual(true, result);
         }
     }

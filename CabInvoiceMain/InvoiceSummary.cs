@@ -28,7 +28,7 @@ namespace CabInvoiceMain
             bool res1 = numOfRides == that.numOfRides;
             bool res2 = totalFare == that.totalFare;
             bool res3 = averageFare == that.averageFare;
-            if (res1 == res2 == res3)
+            if ((res1 && res2 && res3) == true)
             {
                 return true;
             }
