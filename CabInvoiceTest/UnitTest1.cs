@@ -5,9 +5,12 @@ namespace CabInvoiceTest
 {
     public class Tests
     {
+        InvoiceGenerator invoiceGenerator = null;
+
         [SetUp]
         public void Setup()
         {
+            invoiceGenerator = new InvoiceGenerator();
         }
 
         /// <summary>
@@ -16,7 +19,6 @@ namespace CabInvoiceTest
         [Test]
         public void GivenDistanceAndTime_WhenProper_ShouldReturnTotalFare()
         {
-            InvoiceGenerator invoiceGenerator = new InvoiceGenerator();
             double distance = 3.0;
             int time = 5;
             double fare = invoiceGenerator.CalculateFare(distance, time);
@@ -29,11 +31,25 @@ namespace CabInvoiceTest
         [Test]
         public void GivenDistanceAndTime_WhenLess_ShouldReturnMinimumFare()
         {
-            InvoiceGenerator invoiceGenerator = new InvoiceGenerator();
             double distance = 0.1;
             int time = 1;
             double fare = invoiceGenerator.CalculateFare(distance, time);
             Assert.AreEqual(5, fare);
         }
+
+        /// <summary>
+        /// When given multiple rides, should calculate aggregate total fare for all 
+        /// </summary>
+        [Test]
+        public void GivenMultipleRides_WhenProper_ShouldReturnTotalFare()
+        {
+            Ride[] rides =  {   new Ride(3.0, 5),
+                                new Ride(0.1, 1),
+                                new Ride(3.0, 5)
+                            };
+            double fare = invoiceGenerator.CalculateFare(rides);
+            Assert.AreEqual(75, fare);
+        }
+
     }
 }
