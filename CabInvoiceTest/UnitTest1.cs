@@ -1,5 +1,6 @@
 using CabInvoiceMain;
 using NUnit.Framework;
+using System;
 
 namespace CabInvoiceTest
 {
@@ -25,6 +26,7 @@ namespace CabInvoiceTest
             Assert.AreEqual(35, fare);
         }
 
+
         /// <summary>
         ///  When given less distance and Time, should return minimum fare
         /// </summary>
@@ -37,19 +39,22 @@ namespace CabInvoiceTest
             Assert.AreEqual(5, fare);
         }
 
+
         /// <summary>
-        /// When given multiple rides, should calculate aggregate total fare for all 
+        /// When given multiple rides, should return number of rides,total fare,average fare
         /// </summary>
         [Test]
-        public void GivenMultipleRides_WhenProper_ShouldReturnTotalFare()
+        public void GivenMultipleRides_WhenProper_ShouldReturnInvoiceSummary()
         {
             Ride[] rides =  {   new Ride(3.0, 5),
                                 new Ride(0.1, 1),
                                 new Ride(3.0, 5)
                             };
-            double fare = invoiceGenerator.CalculateFare(rides);
-            Assert.AreEqual(75, fare);
+            InvoiceSummary summary = invoiceGenerator.CalculateFare(rides);
+            InvoiceSummary expectedInvoiceSummary = new InvoiceSummary(3, 75.0);
+            bool result = summary.Equals(expectedInvoiceSummary);
+            Console.WriteLine(result);
+            Assert.AreEqual(true, result);
         }
-
     }
 }
