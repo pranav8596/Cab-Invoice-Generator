@@ -22,7 +22,7 @@ namespace CabInvoiceTest
         {
             double distance = 3.0;
             int time = 5;
-            double fare = invoiceService.CalculateFare(distance, time);
+            double fare = invoiceService.CalculateFare(distance, time, RideType.NORMAL);
             Assert.AreEqual(35, fare);
         }
 
@@ -34,8 +34,8 @@ namespace CabInvoiceTest
         {
             double distance = 0.1;
             int time = 1;
-            double fare = invoiceService.CalculateFare(distance, time);
-            Assert.AreEqual(5, fare);
+            double fare = invoiceService.CalculateFare(distance, time, RideType.PREMIUM);
+            Assert.AreEqual(20, fare);
         }
 
         /// <summary>
@@ -44,12 +44,11 @@ namespace CabInvoiceTest
         [Test]
         public void GivenMultipleRides_WhenProper_ShouldReturnInvoiceSummary()
         {
-            Ride[] rides =  {   new Ride(3.0, 5),
-                                new Ride(0.1, 1),
-                                new Ride(3.0, 5)
+            Ride[] rides =  {   new Ride(3.0, 5,RideType.NORMAL),
+                                new Ride(0.1, 1,RideType.PREMIUM)                              
                             };
             InvoiceSummary summary = invoiceService.CalculateFare(rides);
-            InvoiceSummary expectedInvoiceSummary = new InvoiceSummary(3, 75.0);
+            InvoiceSummary expectedInvoiceSummary = new InvoiceSummary(2, 55.0);
             bool result = summary.Equals(expectedInvoiceSummary);
             Assert.AreEqual(true, result);
         }
@@ -61,15 +60,16 @@ namespace CabInvoiceTest
         public void GivenUserIDAndMultipleRides_WhenProper_ShouldReturnInvoiceSummary()
         {
             String userId = "pranav805";
-            Ride[] rides =  {   new Ride(3.0, 5),
-                                new Ride(0.1, 1),
-                                new Ride(3.0, 5)
+            Ride[] rides =  {   new Ride(3.0, 5,RideType.NORMAL),
+                                new Ride(0.1, 1,RideType.PREMIUM),
+                                new Ride(3.0, 5,RideType.PREMIUM)
                             };
             invoiceService.AddRides(userId, rides);
             InvoiceSummary summary = invoiceService.GetInvoiceSummary(userId);
-            InvoiceSummary expectedInvoiceSummary = new InvoiceSummary(3, 75.0);
+            InvoiceSummary expectedInvoiceSummary = new InvoiceSummary(3, 110.0);
             bool result = summary.Equals(expectedInvoiceSummary);
             Assert.AreEqual(true, result);
         }
+       
     }
 }

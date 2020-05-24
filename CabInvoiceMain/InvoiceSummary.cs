@@ -15,6 +15,7 @@ namespace CabInvoiceMain
             this.numOfRides = numOfRides;
             this.totalFare = totalFare;
             this.averageFare = this.totalFare / this.numOfRides;
+            Console.WriteLine(totalFare);
         }
 
         /// <summary>

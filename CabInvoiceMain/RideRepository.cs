@@ -9,7 +9,7 @@ namespace CabInvoiceMain
         Dictionary<string, List<Ride>> userRides = null;
         public RideRepository()
         {
-            userRides = new Dictionary<string, List<Ride>>();
+            this.userRides = new Dictionary<string, List<Ride>>();
         }
 
         public void AddRides(string userId, Ride[] rides)

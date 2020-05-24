@@ -7,9 +7,13 @@ namespace CabInvoiceMain
     public class InvoiceService
     {
         //Constants
-        public const int CostPerKilometer = 10;
-        public const int CostPerMinute = 1;
-        public const int MinimumFare = 5;
+        public const int CostPerKmForNormal = 10;
+        public const int CostPerMinuteForNormal = 1;
+        public const int MinimumFareForNormal = 5;
+
+        public const int CostPerKmForPremium = 15;
+        public const int CostPerMinuteForPremium = 2;
+        public const int MinimumFareForPremium = 20;
 
         public RideRepository rideRepository;
 
@@ -17,7 +21,7 @@ namespace CabInvoiceMain
         {
             this.rideRepository = new RideRepository();
         }
-        
+
 
         /// <summary>
         /// Calculate the total fare for the given distance and time
@@ -25,9 +29,36 @@ namespace CabInvoiceMain
         /// <param name="distance"></param>
         /// <param name="time"></param>
         /// <returns></returns>
-        public double CalculateFare(double distance, int time)
+        public double CalculateFare(double distance, int time, RideType rideType)
         {
-            double totalFare = distance * CostPerKilometer + time * CostPerMinute;            
+            if (rideType.Equals(RideType.NORMAL))
+            {
+                return SetType(CostPerKmForNormal, CostPerMinuteForNormal, MinimumFareForNormal, distance, time);
+            }
+            else
+            {
+                return SetType(CostPerKmForPremium, CostPerMinuteForPremium, MinimumFareForPremium, distance, time);
+
+            }
+
+        }
+
+        /// <summary>
+        /// To calculate the fare for a type of ride
+        /// </summary>
+        /// <param name="costPerKilometerForNormal"></param>
+        /// <param name="costPerMinuteForNormal"></param>
+        /// <param name="minimumFareForNormal"></param>
+        /// <param name="distance"></param>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        private double SetType(int costPerKilometerForNormal, int costPerMinuteForNormal, int minimumFareForNormal, double distance, int time)
+        {
+            int CostPerKilometer = costPerKilometerForNormal;
+            int CostPerMinute = costPerMinuteForNormal;
+            int MinimumFare = minimumFareForNormal;
+
+            double totalFare = distance * CostPerKilometer + time * CostPerMinute;
             return Math.Max(totalFare, MinimumFare);
         }
 
@@ -39,9 +70,9 @@ namespace CabInvoiceMain
         public InvoiceSummary CalculateFare(Ride[] rides)
         {
             double totalFare = 0;
-            foreach(Ride ride in rides)
+            foreach (Ride ride in rides)
             {
-                 totalFare += this.CalculateFare(ride.distance, ride.time);
+                totalFare += this.CalculateFare(ride.distance, ride.time, ride.rideType);
             }
             return new InvoiceSummary(rides.Length, totalFare);
         }
@@ -54,7 +85,7 @@ namespace CabInvoiceMain
         public void AddRides(string userId, Ride[] rides)
         {
             rideRepository.AddRides(userId, rides);
-             
+
         }
 
         /// <summary>
