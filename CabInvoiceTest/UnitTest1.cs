@@ -70,6 +70,20 @@ namespace CabInvoiceTest
             bool result = summary.Equals(expectedInvoiceSummary);
             Assert.AreEqual(true, result);
         }
-       
+
+        /// <summary>
+        /// When given UserID but No rides, should return false
+        /// </summary>
+        [Test]
+        public void GivenUserIDButNoRides_ShouldReturnFalse()
+        {
+            String userId = "pranav805";
+            Ride[] rides =  { };
+            invoiceService.AddRides(userId, rides);
+            InvoiceSummary summary = invoiceService.GetInvoiceSummary(userId);
+            InvoiceSummary expectedInvoiceSummary = new InvoiceSummary(0, 0);
+            bool result = summary.Equals(expectedInvoiceSummary);
+            Assert.AreEqual(false, result);
+        }
     }
 }
