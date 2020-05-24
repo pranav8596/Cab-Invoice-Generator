@@ -4,12 +4,20 @@ using System.Text;
 
 namespace CabInvoiceMain
 {
-    public class InvoiceGenerator
+    public class InvoiceService
     {
         //Constants
         public const int CostPerKilometer = 10;
         public const int CostPerMinute = 1;
         public const int MinimumFare = 5;
+
+        public RideRepository rideRepository;
+
+        public InvoiceService()
+        {
+            this.rideRepository = new RideRepository();
+        }
+        
 
         /// <summary>
         /// Calculate the total fare for the given distance and time
@@ -36,6 +44,27 @@ namespace CabInvoiceMain
                  totalFare += this.CalculateFare(ride.distance, ride.time);
             }
             return new InvoiceSummary(rides.Length, totalFare);
+        }
+
+        /// <summary>
+        /// Add rides for the given UserID
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="rides"></param>
+        public void AddRides(string userId, Ride[] rides)
+        {
+            rideRepository.AddRides(userId, rides);
+             
+        }
+
+        /// <summary>
+        /// Get the invoice summary of all the rides
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public InvoiceSummary GetInvoiceSummary(string userId)
+        {
+            return this.CalculateFare(rideRepository.GetRides(userId));
         }
     }
 }

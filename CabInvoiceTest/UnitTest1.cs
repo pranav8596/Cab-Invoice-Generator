@@ -6,12 +6,12 @@ namespace CabInvoiceTest
 {
     public class Tests
     {
-        InvoiceGenerator invoiceGenerator = null;
+        InvoiceService invoiceService = null;
 
         [SetUp]
         public void Setup()
         {
-            invoiceGenerator = new InvoiceGenerator();
+            invoiceService = new InvoiceService();
         }
 
         /// <summary>
@@ -22,7 +22,7 @@ namespace CabInvoiceTest
         {
             double distance = 3.0;
             int time = 5;
-            double fare = invoiceGenerator.CalculateFare(distance, time);
+            double fare = invoiceService.CalculateFare(distance, time);
             Assert.AreEqual(35, fare);
         }
 
@@ -34,7 +34,7 @@ namespace CabInvoiceTest
         {
             double distance = 0.1;
             int time = 1;
-            double fare = invoiceGenerator.CalculateFare(distance, time);
+            double fare = invoiceService.CalculateFare(distance, time);
             Assert.AreEqual(5, fare);
         }
 
@@ -48,7 +48,25 @@ namespace CabInvoiceTest
                                 new Ride(0.1, 1),
                                 new Ride(3.0, 5)
                             };
-            InvoiceSummary summary = invoiceGenerator.CalculateFare(rides);
+            InvoiceSummary summary = invoiceService.CalculateFare(rides);
+            InvoiceSummary expectedInvoiceSummary = new InvoiceSummary(3, 75.0);
+            bool result = summary.Equals(expectedInvoiceSummary);
+            Assert.AreEqual(true, result);
+        }
+
+        /// <summary>
+        /// When given UserID and multiple rides, should return number of rides,total fare,average fare
+        /// </summary>
+        [Test]
+        public void GivenUserIDAndMultipleRides_WhenProper_ShouldReturnInvoiceSummary()
+        {
+            String userId = "pranav805";
+            Ride[] rides =  {   new Ride(3.0, 5),
+                                new Ride(0.1, 1),
+                                new Ride(3.0, 5)
+                            };
+            invoiceService.AddRides(userId, rides);
+            InvoiceSummary summary = invoiceService.GetInvoiceSummary(userId);
             InvoiceSummary expectedInvoiceSummary = new InvoiceSummary(3, 75.0);
             bool result = summary.Equals(expectedInvoiceSummary);
             Assert.AreEqual(true, result);
